@@ -1,0 +1,75 @@
+{
+    "actorSpecification": 1,
+    "fields": {
+        "title": {
+            "type": "string",
+            "title": "Patent Title"
+        },
+        "description": {
+            "type": "string",
+            "title": "Patent Description"
+        },
+        "applicant": {
+            "type": "string",
+            "title": "Applicant Name"
+        },
+        "filingDate": {
+            "type": "string",
+            "format": "date",
+            "title": "Filing Date"
+        },
+        "publicationDate": {
+            "type": "string",
+            "format": "date",
+            "title": "Publication Date"
+        },
+        "keywordsMatched": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "title": "Matched Keywords"
+        },
+        "patentUrl": {
+            "type": "string",
+            "title": "Patent URL"
+        }
+    },
+    "views": {
+        "overview": {
+            "title": "Patent Overview",
+            "transformation": {
+                "fields": ["title", "applicant", "filingDate", "publicationDate", "keywordsMatched", "patentUrl"]
+            },
+            "display": {
+                "component": "table",
+                "properties": {
+                    "title": {
+                        "label": "Patent Title",
+                        "format": "text"
+                    },
+                    "applicant": {
+                        "label": "Applicant Name",
+                        "format": "text"
+                    },
+                    "filingDate": {
+                        "label": "Filing Date",
+                        "format": "date"
+                    },
+                    "publicationDate": {
+                        "label": "Publication Date",
+                        "format": "date"
+                    },
+                    "keywordsMatched": {
+                        "label": "Keywords Matched",
+                        "format": "array"
+                    },
+                    "patentUrl": {
+                        "label": "Patent URL",
+                        "format": "link"
+                    }
+                }
+            }
+        }
+    }
+}

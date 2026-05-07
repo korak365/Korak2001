@@ -1,0 +1,65 @@
+// Import required modules
+import { Actor } from 'apify';
+import { CheerioCrawler, Dataset } from 'crawlee';
+
+await Actor.init();
+
+const { patentUrls = [], keywords = [], maxApplications = 50 } = (await Actor.getInput()) || {};
+
+// Helper function to match keywords in a description or title
+const matchKeywords = (text, keywords) => {
+    const lowerText = text.toLowerCase();
+    const matches = [];
+
+    keywords.forEach((keyword) => {
+        if (lowerText.includes(keyword.toLowerCase())) {
+            matches.push(keyword);
+        }
+    });
+
+    return matches;
+};
+
+const crawler = new CheerioCrawler({
+    maxConcurrency: 5,
+    async requestHandler({ request, $, log }) {
+        log.info(`Processing URL: ${request.url}`);
+
+        const patents = $('.result-row'); // Update the selector to match the database structure
+        for (const patent of patents.slice(0, maxApplications)) {
+            const title = $(patent).find('.result-title').text().trim();
+            const description = $(patent).find('.result-description').text().trim();
+            const applicant = $(patent).find('.result-applicant').text().trim();
+            const filingDate = $(patent).find('.result-filing-date').text().trim();
+            const publicationDate = $(patent).find('.result-publication-date').text().trim();
+            const patentUrl = $(patent).find('a').attr('href');
+
+            if (!title || !description || !patentUrl) continue;
+
+            const matchedKeywords = matchKeywords(title + description, keywords);
+
+            // Skip if no keywords match
+            if (matchedKeywords.length === 0) continue;
+
+            await Dataset.pushData({
+                title,
+                description,
+                applicant,
+                filingDate,
+                publicationDate,
+                keywordsMatched: matchedKeywords,
+                patentUrl: patentUrl.startsWith('http') ? patentUrl : new URL(patentUrl, request.loadedUrl).toString(),
+            });
+        }
+    },
+});
+
+// Add requests to the crawler
+for (const url of patentUrls) {
+    crawler.addRequests([{ url }]);
+}
+
+// Run the scraper
+await crawler.run();
+
+await Actor.exit();

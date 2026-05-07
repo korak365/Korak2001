@@ -1,0 +1,17 @@
+{
+    "actorSpecification": 1,
+    "name": "patent-application-tracker",
+    "title": "Patent Application Tracker",
+    "description": "Scrapes new patent filings in specific technology sectors (e.g., Solid State Batteries) for monitoring and analysis.",
+    "version": "0.0",
+    "meta": {
+        "templateId": "ai-generated-actor",
+        "generatedBy": "copilot-2026"
+    },
+    "input": "./input_schema.json",
+    "output": "./output_schema.json",
+    "storages": {
+        "dataset": "./dataset_schema.json"
+    },
+    "dockerfile": "../Dockerfile"
+}

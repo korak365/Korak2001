@@ -1,0 +1,11 @@
+{
+    "actorOutputSchemaVersion": 1,
+    "title": "Output Schema for Patent Application Tracker",
+    "properties": {
+        "overview": {
+            "type": "string",
+            "title": "Monitor Overview",
+            "template": "{{links.apiDefaultDatasetUrl}}/items?view=overview"
+        }
+    }
+}

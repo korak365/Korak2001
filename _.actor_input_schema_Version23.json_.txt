@@ -1,0 +1,31 @@
+{
+    "title": "Input Schema for Patent Application Tracker",
+    "type": "object",
+    "schemaVersion": 1,
+    "properties": {
+        "patentUrls": {
+            "title": "Patent Database URLs",
+            "type": "array",
+            "description": "List of URLs for patent databases to scrape for new applications.",
+            "editor": "requestListSources",
+            "prefill": [
+                { "url": "https://patents.google.com/" },
+                { "url": "https://www.uspto.gov/patents/apply" }
+            ]
+        },
+        "keywords": {
+            "title": "Keywords to Filter Applications",
+            "type": "array",
+            "description": "Filter applications matching specific keywords (e.g., 'Solid State Batteries', 'AI').",
+            "editor": "stringArray",
+            "default": ["Solid State Batteries", "AI", "Machine Learning"]
+        },
+        "maxApplications": {
+            "title": "Maximum Applications per Run",
+            "type": "integer",
+            "description": "Limit the number of patent applications scraped per run.",
+            "default": 50
+        }
+    },
+    "required": ["patentUrls", "keywords"]
+}
